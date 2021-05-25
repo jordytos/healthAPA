@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menuHome"
+        android:icon="@drawable/ic_home"
+        android:title="Accueil"/>
+
+    <item android:id="@+id/menuCompte"
+        android:icon="@drawable/ic_account_circle"
+        android:title="Compte"/>
+
+    <item android:id="@+id/menuLogout"
+        android:icon="@drawable/ic_logout"
+        android:title="Déconnexion"/>
+
+
+</menu>
