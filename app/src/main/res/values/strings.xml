@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">healthAPA</string>
     <string name="appName">HealthAPA</string>
+    <string name="menuHome">Accueil</string>
+    <string name="menuCompte">Compte</string>
+    <string name="menuLog">Logout</string>
+    <string name="heures">heures</string>
 </resources>
