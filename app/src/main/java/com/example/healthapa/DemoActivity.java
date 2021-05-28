@@ -1,15 +1,15 @@
 package com.example.healthapa;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import android.content.Context;
-
-import java.util.Locale;
+import android.view.Menu;
 
 public class DemoActivity  extends FragmentPagerAdapter {
+
+
 
     private final Context mContext;
     FragmentManager fragmentManager;
@@ -25,7 +25,7 @@ public class DemoActivity  extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         switch (position) {
             case 0:
-                return HomeActivity.newInstance(fragmentManager);
+                return HomeActivityPatient.newInstance(fragmentManager);
             case 1:
                 return UserInfo.newInstance(fragmentManager);
 

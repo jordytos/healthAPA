@@ -1,14 +1,19 @@
 package com.example.healthapa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +26,10 @@ import java.util.List;
 
 
 public class CreateParcoursFragment extends DialogFragment {
+    ListView listViewData;
+    ArrayAdapter<String> adapter;
+    String[] listeActivites = {"Activité 1","Activité 2","Activité 3","Activité 4","Activité 5","Activité 6","Activité 7"};
+
     FragmentManager fm;
     ListeParcours listeParcours;
     EditText nomEditText, descriptionEditText, categorieEditText, activiteEditText;
@@ -33,6 +42,8 @@ public class CreateParcoursFragment extends DialogFragment {
 
     }*/
 
+
+
     public CreateParcoursFragment() {
 
         Parcours p1 = new Parcours("Parcours 1","AVC","Ok");
@@ -44,6 +55,8 @@ public class CreateParcoursFragment extends DialogFragment {
         this.listParcours.add(p2);
         this.listParcours.add(p3);
         this.listParcours.add(p4);
+
+
 
     }
 
@@ -68,7 +81,12 @@ public class CreateParcoursFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,10 +94,18 @@ public class CreateParcoursFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.create_parcours, container, false);
 
+        setHasOptionsMenu(true);
+
         nomEditText = view.findViewById(R.id.nomParcours);
         categorieEditText = view.findViewById(R.id.categorieParcours);
         descriptionEditText = view.findViewById(R.id.descriptionParcours);
         addParcoursButton = view.findViewById(R.id.addParcoursButton);
+        listViewData = view.findViewById(R.id.listViewAct);
+
+        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeActivites);
+
+        listViewData.setAdapter(adapter);
+
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -146,5 +172,11 @@ public class CreateParcoursFragment extends DialogFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+
     }
 }

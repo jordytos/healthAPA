@@ -62,8 +62,8 @@ public class login extends AppCompatActivity {
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
 
-         u ="user";
-         p = "user";
+         u ="";
+         p = "";
 
     }
 

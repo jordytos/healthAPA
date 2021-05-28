@@ -12,10 +12,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,10 +30,14 @@ import java.util.List;
 
 
 public class CreateActiviteFragment extends DialogFragment {
+    ListView listViewData;
+    ArrayAdapter<String> adapter;
+    String[] listeStructures = {"Structure 1","Structure 2","Structure 3","Structure 4","Structure 5","Structure 6","Structure 7"};
+
     FragmentManager fm;
     ListeActivite listeActivite;
 
-    EditText titleEditText, descriptionEditText, durationEditText, structureEditText;
+    EditText titleEditText, descriptionEditText, durationEditText;
     Button addActivityButton;
     List<Activite> listActivites = new ArrayList<Activite>();
 
@@ -82,11 +90,17 @@ public class CreateActiviteFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.create_activite, container, false);
 
+        setHasOptionsMenu(true);
+
         titleEditText = view.findViewById(R.id.titleActivite);
         descriptionEditText = view.findViewById(R.id.descriptionActivite);
         durationEditText = view.findViewById(R.id.durationActivite);
-        structureEditText = view.findViewById(R.id.structureActivite);
         addActivityButton = view.findViewById(R.id.addActivityButton);
+        listViewData = view.findViewById(R.id.listViewStruct);
+
+        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeStructures);
+
+        listViewData.setAdapter(adapter);
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -110,17 +124,11 @@ public class CreateActiviteFragment extends DialogFragment {
         descriptionEditText.addTextChangedListener(textWatcher);
         durationEditText.addTextChangedListener(textWatcher);
 
-        structureEditText.setOnClickListener(v -> {
-            ListeActivite chooseStructureFragment = ListeActivite.newInstance(fm);
-            chooseStructureFragment.show(fm, "chooseStructureFragment");
-        });
-
         addActivityButton.setOnClickListener(v -> {
 
             String titre = titleEditText.getText().toString();
             String descrip = descriptionEditText.getText().toString();
             String duree = durationEditText.getText().toString();
-            String struct = structureEditText.getText().toString();
 
             /*Log.d("succes","Titre "+titre);
             Log.d("succes","Descrip "+descrip);
@@ -154,4 +162,11 @@ public class CreateActiviteFragment extends DialogFragment {
 
         return view;
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+
+    }
+
 }

@@ -7,19 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthapa.entities.Activite;
-import com.example.healthapa.entities.Parcours;
+import com.example.healthapa.entities.Structure;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class ListeParcours extends Fragment {
+public class ListeStructure extends DialogFragment{
 
     FragmentManager fragmentManager;
     FloatingActionButton floatingActivityButton;
@@ -28,21 +27,21 @@ public class ListeParcours extends Fragment {
 
 
     private RecyclerView mRecyclerView;
-    private MonRecyclerViewAdapterParcours mAdapter;
+    private MonRecyclerViewAdapterStructure mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private View view;
 
-    CreateParcoursFragment addParcoursFragment = new CreateParcoursFragment();
+    CreateStructureFragment addStructureFragment = new CreateStructureFragment();
 
-    public ListeParcours(){
+    public ListeStructure(){
 
 
     }
 
-    public static ListeParcours newInstance(FragmentManager fragmentManager){
-        ListeParcours listeParcours = new ListeParcours();
-        listeParcours.fragmentManager = fragmentManager;
-        return listeParcours;
+    public static ListeStructure newInstance(FragmentManager fragmentManager){
+        ListeStructure listeStructure = new ListeStructure();
+        listeStructure.fragmentManager = fragmentManager;
+        return listeStructure;
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ListeParcours extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.liste_parcours, container, false);
+        view = inflater.inflate(R.layout.liste_structure, container, false);
 
         // Add the following lines to create RecyclerView
         mRecyclerView = view.findViewById(R.id.recycler_view);
@@ -68,14 +67,14 @@ public class ListeParcours extends Fragment {
         //mLayoutManager=new LinearLayoutManager(this,GridLayoutManager.VERTICAL, false);
 
         //mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MonRecyclerViewAdapterParcours(getContext(), getDataSource());
+        mAdapter = new MonRecyclerViewAdapterStructure(getContext(), getDataSource());
         mRecyclerView.setAdapter(mAdapter);
 
 
         floatingActivityButton = view.findViewById(R.id.floatingActionButton);
         floatingActivityButton.setOnClickListener(v -> {
-            addParcoursFragment = CreateParcoursFragment.newInstance(fragmentManager);
-            addParcoursFragment.show(getActivity().getSupportFragmentManager(), "addParcoursFragment");
+            addStructureFragment = CreateStructureFragment.newInstance(fragmentManager);
+            addStructureFragment.show(getActivity().getSupportFragmentManager(), "addStructureFragment");
 
 
 
@@ -86,29 +85,28 @@ public class ListeParcours extends Fragment {
 
     private ArrayList<LinkedHashMap<String, String>> getDataSource(){
 
-        ArrayList<LinkedHashMap<String, String>> parcours = new ArrayList<>();
+        ArrayList<LinkedHashMap<String, String>> structures = new ArrayList<>();
 
         int cnt = 0;
-        for (Parcours pc: addParcoursFragment.getListParcours())
+        for (Structure ac: addStructureFragment.getListStructures())
         {
-            LinkedHashMap<String, String> parcours1 = new LinkedHashMap<>();
+            LinkedHashMap<String, String> structure1 = new LinkedHashMap<>();
 
             cnt++;
             String count = String.valueOf(cnt);
 
-            Log.d("succes","---> Parcours n°"+cnt);
-            Log.d("succes","Nom "+pc.getTitre());
-            Log.d("succes","Catégorie "+pc.getCategory());
-            Log.d("succes","Description "+pc.getDescription());
+            Log.d("succes","---> Strcutre n°"+cnt);
+            Log.d("succes","Titre "+ac.getNom());
+            Log.d("succes","Discipline "+ac.getDiscipline());
+            Log.d("succes","Pathologies "+ac.getListePathology());
 
-            parcours1.put("nom", pc.getTitre());
-            parcours1.put("categorie", pc.getCategory());
-            parcours1.put("description", pc.getDescription());
-            parcours1.put("activite", "SOON...");
-            parcours.add(parcours1);
+            structure1.put("titre", ac.getNom());
+            structure1.put("discipline", ac.getDiscipline());
+            structure1.put("Pathologies", ac.getListePathology());
+            structures.add(structure1);
         }
 
-        return parcours;
+        return structures;
 
     }
 

@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthAPA">
-        <activity android:name=".CreateActiviteFragment"></activity>
+        <activity android:name=".CalendarFragment"></activity>
+        <activity android:name=".ListAddButton" />
+        <activity android:name=".ParcoursUser" />
+        <activity android:name=".ActiviteShow" />
+        <activity android:name=".CreateActiviteFragment" />
         <activity android:name=".UserInfo" />
         <activity android:name=".MainActivity" />
         <activity android:name=".DemoActivity" />
@@ -22,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".HomeActivityPatient" />
     </application>
 
 </manifest>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/trending_background"
+    tools:context=".ListAddButton">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Page d'ajout"
+        android:textStyle="bold"
+        android:textColor="@color/colorBackground"
+        android:textSize="24sp"
+        android:layout_marginBottom="50dp"/>
+
+    <Button
+        android:id="@+id/addActiviteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_500"
+        android:text="Ajouter une activité"/>
+
+    <Button
+        android:id="@+id/addStructureBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_500"
+        android:text="Ajouter une structure"/>
+
+</LinearLayout>
