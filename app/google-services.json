@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "912012937673",
+    "firebase_url": "https://healthapa-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "healthapa",
+    "storage_bucket": "healthapa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:912012937673:android:383e9976939ea8e0d98018",
+        "android_client_info": {
+          "package_name": "com.example.healthapa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "912012937673-o3sa6vnea5bspaetmf03a431qm9lkrcm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVpoHpiYiBXnmLdX9OWDatSVtktccbEL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "912012937673-o3sa6vnea5bspaetmf03a431qm9lkrcm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
