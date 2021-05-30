@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +30,12 @@ import com.google.firebase.database.ValueEventListener;
 public class register extends AppCompatActivity {
 
     EditText firstNameTxt, lastNameTxt, emailTxt, passwordTxt, ageTxt, phoneTxt;
-    RadioButton interv, medecin, patient;
+    RadioGroup radioGroup;
+    RadioButton radioBtn;
     Button registerButton;
     TextView connexion;
     DatabaseReference reff;
-    //long maxid;
+    //long maxid=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +49,13 @@ public class register extends AppCompatActivity {
         ageTxt = findViewById(R.id.ageReg);
         phoneTxt = findViewById(R.id.phoneReg);
 
-        interv = findViewById(R.id.intervenantBtn);
-        medecin = findViewById(R.id.medecinBtn);
-        patient = findViewById(R.id.patientBtn);
-        
+        radioGroup = findViewById(R.id.radioBtn);
+
         registerButton = findViewById(R.id.registerBtn);
+
         Utilisateur utilisateur = new Utilisateur();
         reff = FirebaseDatabase.getInstance().getReference().child("Utilisateur");
-       /* reff.addValueEventListener(new ValueEventListener(){
+        /*reff.addValueEventListener(new ValueEventListener(){
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,12 +80,17 @@ public class register extends AppCompatActivity {
                String phone = phoneTxt.getText().toString();
                String mdp = passwordTxt.getText().toString();
 
+               int selectedId = radioGroup.getCheckedRadioButtonId();
+               radioBtn = (RadioButton) findViewById(selectedId);
+               String role = radioBtn.getText().toString();
+
                utilisateur.setPrenom_user(prenom);
                utilisateur.setNom_user(nom);
                utilisateur.setEmail(email);
                utilisateur.setPassword(mdp);
                utilisateur.setAge(age);
                utilisateur.setTelephone(phone);
+               utilisateur.setRole(role);
                reff.push().setValue(utilisateur);
                //reff.child(String.valueOf(maxid+1)).setValue("Utilisateur");
 
