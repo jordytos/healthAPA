@@ -20,6 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.healthapa.dao.UtilisateurDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Utilisateur;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,6 +40,9 @@ public class register extends AppCompatActivity {
     TextView connexion;
     DatabaseReference reff;
     private FirebaseAuth mAuth;
+
+    private apaDatabase db;
+    private UtilisateurDao utilisateurDao;
 
 
     //long maxid=0;
@@ -61,7 +66,8 @@ public class register extends AppCompatActivity {
 
         registerButton = findViewById(R.id.registerBtn);
 
-
+        db = apaDatabase.getDatabase(this);
+        utilisateurDao = db.utilisateurDao();
 
         Utilisateur utilisateur = new Utilisateur();
         reff = FirebaseDatabase.getInstance().getReference().child("Utilisateur");
@@ -111,6 +117,19 @@ public class register extends AppCompatActivity {
                utilisateur.setRole(role);
                utilisateur.setTaille(taille);
                utilisateur.setPoids(poids);
+
+               new Thread(new Runnable(){
+                   @Override
+                   public void run() {
+                       utilisateurDao.insererUSer(utilisateur);
+                       runOnUiThread(new Runnable(){
+                           @Override
+                           public void run() {
+                               Toast.makeText(register.this, "Registered Successfully !!", Toast.LENGTH_SHORT).show();
+                           }
+                       });
+                   }
+               }).start();
 
                createUser();
 

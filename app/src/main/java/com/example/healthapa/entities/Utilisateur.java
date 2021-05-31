@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey;
 
 import java.time.LocalDate;
 
-
+@Entity
 public class Utilisateur {
 
-
+    @PrimaryKey(autoGenerate = true)
     private int user_id;
 
     private String nom_user;
