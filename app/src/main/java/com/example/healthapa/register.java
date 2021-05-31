@@ -11,7 +11,6 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -27,21 +26,20 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class register extends AppCompatActivity {
 
-    EditText firstNameTxt, lastNameTxt, emailTxt, passwordTxt, ageTxt, phoneTxt;
+    EditText firstNameTxt, lastNameTxt, emailTxt, passwordTxt, ageTxt, phoneTxt,poidsTxt, tailleTxt;
     RadioGroup radioGroup;
     RadioButton radioBtn;
     Button registerButton;
     TextView connexion;
     DatabaseReference reff;
     private FirebaseAuth mAuth;
+
+
     //long maxid=0;
 
     @Override
@@ -56,10 +54,14 @@ public class register extends AppCompatActivity {
         passwordTxt = findViewById(R.id.passwordReg);
         ageTxt = findViewById(R.id.ageReg);
         phoneTxt = findViewById(R.id.phoneReg);
+        poidsTxt = findViewById(R.id.poidsReg);
+        tailleTxt = findViewById(R.id.tailleReg);
 
         radioGroup = findViewById(R.id.radioBtn);
 
         registerButton = findViewById(R.id.registerBtn);
+
+
 
         Utilisateur utilisateur = new Utilisateur();
         reff = FirebaseDatabase.getInstance().getReference().child("Utilisateur");
@@ -88,6 +90,8 @@ public class register extends AppCompatActivity {
            @Override
            public void onClick(View view){
                int age = Integer.parseInt(ageTxt.getText().toString().trim());
+               int poids = Integer.parseInt(poidsTxt.getText().toString().trim());
+               int taille = Integer.parseInt(tailleTxt.getText().toString().trim());
                String prenom = firstNameTxt.getText().toString().trim();
                String nom = lastNameTxt.getText().toString().trim();
                String email = emailTxt.getText().toString().trim();
@@ -105,19 +109,12 @@ public class register extends AppCompatActivity {
                utilisateur.setAge(age);
                utilisateur.setTelephone(phone);
                utilisateur.setRole(role);
+               utilisateur.setTaille(taille);
+               utilisateur.setPoids(poids);
 
                createUser();
 
                reff.push().setValue(utilisateur);
-               //reff.child(String.valueOf(maxid+1)).setValue("Utilisateur");
-
-
-               Log.d("succes","Prenom "+firstNameTxt);
-               Log.d("succes","Nom "+lastNameTxt);
-               Log.d("succes","Email "+emailTxt);
-               Log.d("succes","mdp "+passwordTxt);
-               Log.d("succes","Age "+age);
-               Log.d("succes","Phone "+phoneTxt);
 
            }
         });
@@ -158,7 +155,7 @@ public class register extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(register.this, "Registered Successfully !!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(register.this, "Registered Successfully !!", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(register.this , login.class));
                                 finish();
                             }

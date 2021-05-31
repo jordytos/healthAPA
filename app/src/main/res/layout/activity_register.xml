@@ -145,11 +145,45 @@
                 android:textSize="20sp"
                 tools:ignore="Autofill" />
 
+            <EditText
+                android:id="@+id/tailleReg"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:drawablePadding="10dp"
+                android:layout_below="@+id/phoneReg"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="28dp"
+                android:background="#11000000"
+                android:drawableLeft="@drawable/ic_action_user"
+                android:ems="10"
+                android:hint="Taille"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                tools:ignore="Autofill" />
+
+            <EditText
+                android:id="@+id/poidsReg"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:drawablePadding="10dp"
+                android:layout_below="@+id/tailleReg"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="28dp"
+                android:background="#11000000"
+                android:drawableLeft="@drawable/ic_action_user"
+                android:ems="10"
+                android:hint="Poids"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                tools:ignore="Autofill" />
+
             <RadioGroup
                 android:id="@+id/radioBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/phone"
+                android:layout_below="@+id/poidsReg"
                 android:layout_centerHorizontal="true"
                 android:orientation="horizontal"
                 android:buttonTint="@color/white"

@@ -29,8 +29,8 @@ public class login extends AppCompatActivity {
     private TextView register;
     private FirebaseAuth mAuth;
 
-    private String user,u,p;
-    private String pass;
+    private long backPressedTime;
+    private Toast backToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,6 @@ public class login extends AppCompatActivity {
         password = findViewById(R.id.password);
         mAuth = FirebaseAuth.getInstance();
 
-         u ="";
-         p = "";
 
     }
 
@@ -115,5 +113,15 @@ public class login extends AppCompatActivity {
         }else{
             username.setError("Pleas Enter Correct Email");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(login.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("LOGOUT", true);
+        startActivity(intent);
+
+        login.this.finish();
     }
 }

@@ -29,6 +29,7 @@
             </ImageView>
 
             <TextView
+                android:id="@+id/nomUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="John Smith"
@@ -67,6 +68,7 @@
                         android:textSize="20sp"/>
 
                     <TextView
+                        android:id="@+id/ageUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -90,6 +92,7 @@
                         android:textSize="20sp"/>
 
                     <TextView
+                        android:id="@+id/tailleUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -113,6 +116,7 @@
                         android:textSize="20sp"/>
 
                     <TextView
+                        android:id="@+id/poidsUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -144,6 +148,7 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_action_email_colored"/>
             <TextView
+                android:id="@+id/emailUser"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,12 +168,13 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_action_date_colored"/>
             <TextView
+                android:id="@+id/roleUser"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:textStyle="bold"
-                android:text="24 - 08 - 1997"/>
+                android:text="Patient"/>
         </LinearLayout>
 
         <LinearLayout
@@ -182,6 +188,7 @@
                 android:layout_height="36dp"
                 android:src="@drawable/ic_action_phone_colored"/>
             <TextView
+                android:id="@+id/phoneUser"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

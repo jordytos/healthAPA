@@ -7,12 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getIntent().getBooleanExtra("LOGOUT", false))
+        {
+            finish();
+        }
 
         //Toast.makeText(MainActivity.this, "Connection to data base succeed", Toast.LENGTH_SHORT).show();
 
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.menuLogout:
-                            FirebaseAuth.getInstance().signOut();
+                            selectedFragment = new logout();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
