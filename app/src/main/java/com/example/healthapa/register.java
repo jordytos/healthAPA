@@ -12,6 +12,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.healthapa.entities.Utilisateur;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,12 +41,14 @@ public class register extends AppCompatActivity {
     Button registerButton;
     TextView connexion;
     DatabaseReference reff;
+    private FirebaseAuth mAuth;
     //long maxid=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        mAuth = FirebaseAuth.getInstance();
 
         firstNameTxt = findViewById(R.id.firstnameReg);
         lastNameTxt = findViewById(R.id.lastnameReg);
@@ -69,20 +77,26 @@ public class register extends AppCompatActivity {
 
             }
         });*/
+
+        if(mAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         
         registerButton.setOnClickListener(new View.OnClickListener(){
            @Override
            public void onClick(View view){
-               int age = Integer.parseInt(ageTxt.getText().toString());
-               String prenom = firstNameTxt.getText().toString();
-               String nom = lastNameTxt.getText().toString();
-               String email = emailTxt.getText().toString();
-               String phone = phoneTxt.getText().toString();
-               String mdp = passwordTxt.getText().toString();
+               int age = Integer.parseInt(ageTxt.getText().toString().trim());
+               String prenom = firstNameTxt.getText().toString().trim();
+               String nom = lastNameTxt.getText().toString().trim();
+               String email = emailTxt.getText().toString().trim();
+               String phone = phoneTxt.getText().toString().trim();
+               String mdp = passwordTxt.getText().toString().trim();
 
                int selectedId = radioGroup.getCheckedRadioButtonId();
                radioBtn = (RadioButton) findViewById(selectedId);
-               String role = radioBtn.getText().toString();
+               String role = radioBtn.getText().toString().trim();
 
                utilisateur.setPrenom_user(prenom);
                utilisateur.setNom_user(nom);
@@ -91,10 +105,12 @@ public class register extends AppCompatActivity {
                utilisateur.setAge(age);
                utilisateur.setTelephone(phone);
                utilisateur.setRole(role);
+
+               createUser();
+
                reff.push().setValue(utilisateur);
                //reff.child(String.valueOf(maxid+1)).setValue("Utilisateur");
 
-               Toast.makeText(register.this, "Votre compte a été créé", Toast.LENGTH_SHORT).show();
 
                Log.d("succes","Prenom "+firstNameTxt);
                Log.d("succes","Nom "+lastNameTxt);
@@ -131,4 +147,35 @@ public class register extends AppCompatActivity {
         connexion.setText(ss);
         connexion.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    private void createUser(){
+        String email = emailTxt.getText().toString();
+        String pass = passwordTxt.getText().toString();
+
+        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            if (!pass.isEmpty()){
+                mAuth.createUserWithEmailAndPassword(email, pass)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                Toast.makeText(register.this, "Registered Successfully !!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(register.this , login.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(register.this, "Registration Error !!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }else{
+                passwordTxt.setError("Empty Fields Are not Allowed");
+            }
+        }else if(email.isEmpty()){
+            emailTxt.setError("Empty Fields Are not Allowed");
+        }else{
+            emailTxt.setError("Pleas Enter Correct Email");
+        }
+    }
+
 }

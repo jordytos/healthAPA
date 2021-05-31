@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.menuLogout:
-                            selectedFragment = new CalendarFragment();
+                            FirebaseAuth.getInstance().signOut();
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
