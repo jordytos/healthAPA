@@ -9,17 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.healthapa.dao.UtilisateurDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Utilisateur;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 public class UserInfo extends DialogFragment {
 
     TextView ageTxt, poidsTxt, emailTxt, phoneTxt, nomTxt, tailleTxt, roleTxt;
     private FirebaseAuth mAuth;
 
-
+    private apaDatabase db;
+    private UtilisateurDao utilisateurDao;
 
     FragmentManager fragmentManager;
 
@@ -45,7 +51,6 @@ public class UserInfo extends DialogFragment {
 
 
 
-
         nomTxt = view.findViewById(R.id.nomUser);
         ageTxt = view.findViewById(R.id.ageUser);
         tailleTxt = view.findViewById(R.id.tailleUser);
@@ -54,14 +59,44 @@ public class UserInfo extends DialogFragment {
         roleTxt = view.findViewById(R.id.roleUser);
         phoneTxt = view.findViewById(R.id.phoneUser);
 
-        /*String fullName = user.getNom_user() +" "+ user.getPrenom_user();
-        nomTxt.setText(fullName);
-        ageTxt.setText(user.getAge());
-        tailleTxt.setText(user.getTaille());
-        poidsTxt.setText(user.getPoids());
-        emailTxt.setText(user.getEmail());
-        roleTxt.setText(user.getRole());
-        phoneTxt.setText(user.getTelephone());*/
+        new Thread(() -> {
+
+            db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+            utilisateurDao = db.utilisateurDao();
+            List<Utilisateur> user_list = utilisateurDao.findAllUser();
+
+
+            getActivity().runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    Utilisateur new_user = new Utilisateur();
+
+                    for (Utilisateur user: user_list
+                    ) {
+                        if(user.getEmail().equals(currentUserEmail)){
+                            new_user = user;
+                        }
+
+                    }
+                    String fullName = new_user.getPrenom_user() +" "+ new_user.getNom_user();
+                    nomTxt.setText(fullName);
+                    String ag = String.valueOf(new_user.getAge());
+                    ageTxt.setText(ag);
+                    String tl = String.valueOf(new_user.getTaille()) + "cm";
+                    tailleTxt.setText(tl);
+                    String p = String.valueOf(new_user.getPoids()) + "kg";
+                    poidsTxt.setText(p);
+                    emailTxt.setText(new_user.getEmail());
+                    roleTxt.setText(new_user.getRole());
+                    phoneTxt.setText(new_user.getTelephone());
+                }
+            });
+
+        }).start();
+
+
+
+
 
 
 

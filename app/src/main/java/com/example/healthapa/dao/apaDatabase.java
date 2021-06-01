@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.healthapa.entities.Utilisateur;
 
-@Database(entities = {Utilisateur.class}, version = 1)
+@Database(entities = {Utilisateur.class}, version = 2)
 public abstract class apaDatabase extends RoomDatabase {
 
     public abstract UtilisateurDao utilisateurDao();

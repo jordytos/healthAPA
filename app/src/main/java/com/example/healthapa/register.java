@@ -122,6 +122,7 @@ public class register extends AppCompatActivity {
                    @Override
                    public void run() {
                        utilisateurDao.insererUSer(utilisateur);
+                       finish();
                        runOnUiThread(new Runnable(){
                            @Override
                            public void run() {
@@ -192,6 +193,12 @@ public class register extends AppCompatActivity {
         }else{
             emailTxt.setError("Pleas Enter Correct Email");
         }
+    }
+
+    public void newUser(Utilisateur utilisateur){
+        utilisateurDao.insererUSer(utilisateur);
+        Toast.makeText(register.this, "Registered Successfully !!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
 }

@@ -51,7 +51,7 @@ public class CreateActiviteFragment extends DialogFragment {
 
         Activite a1 = new Activite("Natation","description\", \"Lorem ipsum dolor sit amet coko lier de la verginier manteau soyeux","1h");
         Activite a2 = new Activite("Course","Run Run","2h");
-        Activite a3 = new Activite("Marche","description\", \"Marchons parlons volons ok ok ronaldinho gaucho joueur foot ronalldo messi goat et fraude pessi hurle miaule aboie miaouw neymar jr mbappe lea tortue ok pd cough cough","3h");
+        Activite a3 = new Activite("Marche","description\", \"Marchons parlons volons ok ok ronaldinho gaucho joueur foot ronalldo messi goat et fraude pessi hurle miaule aboie miaouw neymar jr mbappe lea tortue cough cough","3h");
         Activite a4 = new Activite("Course à pied","Randonnée et marche le long du lac","30 min");
 
         this.listActivites.add(a1);

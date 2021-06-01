@@ -7,15 +7,28 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.healthapa.dao.UtilisateurDao;
+import com.example.healthapa.dao.apaDatabase;
+import com.example.healthapa.entities.Utilisateur;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private DemoActivity demoActivity;
     private ViewPager viewPager;
     FragmentManager fragmentManager;
+
+    private FirebaseAuth mAuth;
+
+    private apaDatabase db;
+    private UtilisateurDao utilisateurDao;
 
 
 
@@ -24,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String currentUserEmail = currentUser.getEmail();
 
         if (getIntent().getBooleanExtra("LOGOUT", false))
         {
@@ -37,28 +54,121 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListerner);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeActivityPatient()).commit();
+
+        new Thread(() -> {
+
+            db = apaDatabase.getDatabase(this);
+            utilisateurDao = db.utilisateurDao();
+            List<Utilisateur> user_list = utilisateurDao.findAllUser();
+
+
+            runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    Utilisateur new_user = new Utilisateur();
+
+                    for (Utilisateur user: user_list
+                    ) {
+                        if(user.getRole().equals("Médecin")){
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeActivityMedecin()).commit();
+                        }
+                        else if(user.getRole().equals("Patient")){
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeActivityPatient()).commit();
+                        }
+                        else if(user.getRole().equals("Intervenant")){
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeActivityIntervenant()).commit();
+                        }
+                        else{
+                            Log.d("Error", "Role non reconnu");
+                        }
+
+                    }
+                }
+            });
+
+        }).start();
+
+
+        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeActivityPatient()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListerner =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
 
-                    switch (item.getItemId()){
-                        case R.id.menuHome:
-                            selectedFragment = new HomeActivityMedecin();
-                            break;
-                        case R.id.menuCompte:
-                            selectedFragment = new UserInfo();
-                            break;
+                    new Thread(() -> {
 
-                        case R.id.menuLogout:
-                            selectedFragment = new logout();
-                            break;
-                    }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                        db = apaDatabase.getDatabase(getApplicationContext());
+                        utilisateurDao = db.utilisateurDao();
+                        List<Utilisateur> user_list = utilisateurDao.findAllUser();
+
+                        runOnUiThread(new Runnable(){
+                            @Override
+                            public void run() {
+                                Fragment selectedFragment = null;
+
+                                for (Utilisateur user: user_list)
+                                {
+                                    if(user.getRole().equals("Médecin")){
+
+                                        switch (item.getItemId()){
+                                            case R.id.menuHome:
+                                                selectedFragment = new HomeActivityMedecin();
+                                                break;
+                                            case R.id.menuCompte:
+                                                selectedFragment = new UserInfo();
+                                                break;
+
+                                            case R.id.menuLogout:
+                                                selectedFragment = new logout();
+                                                break;
+                                        }
+                                    }
+                                    else if(user.getRole().equals("Patient")){
+
+
+                                        switch (item.getItemId()){
+                                            case R.id.menuHome:
+                                                selectedFragment = new HomeActivityPatient();
+                                                break;
+                                            case R.id.menuCompte:
+                                                selectedFragment = new UserInfo();
+                                                break;
+
+                                            case R.id.menuLogout:
+                                                selectedFragment = new logout();
+                                                break;
+                                        }
+                                    }
+                                    else if(user.getRole().equals("Intervenant")){
+
+
+                                        switch (item.getItemId()){
+                                            case R.id.menuHome:
+                                                selectedFragment = new HomeActivityIntervenant();
+                                                break;
+                                            case R.id.menuCompte:
+                                                selectedFragment = new UserInfo();
+                                                break;
+
+                                            case R.id.menuLogout:
+                                                selectedFragment = new logout();
+                                                break;
+                                        }
+                                    }
+                                    else{
+                                        Log.d("Error", "Role non reconnu");
+                                    }
+
+                                }
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+
+                            }
+                        });
+
+                    }).start();
+
                     return true;
                 }
             };
