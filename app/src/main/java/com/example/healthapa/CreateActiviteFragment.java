@@ -2,6 +2,7 @@ package com.example.healthapa;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,8 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -130,18 +133,19 @@ public class CreateActiviteFragment extends DialogFragment {
             String descrip = descriptionEditText.getText().toString().trim();
             String duree = durationEditText.getText().toString().trim();
 
+
             new Thread(new Runnable(){
                 @Override
                 public void run() {
+
+                    int i = (int) (Math.random()* listViewData.getCount());
+                    String structure = String.valueOf((listViewData.getItemAtPosition(i))).trim();
                     activite.setTitre(titre);
                     activite.setDuree(duree);
                     activite.setDescription(descrip);
-                    Log.d("Message : ", activite.toString());
-                    try {
-                        activiteDao.insererActivite(activite);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    activite.setStructure(structure);
+                    activiteDao.insererActivite(activite);
+
                     getActivity().runOnUiThread(new Runnable(){
                         @Override
                         public void run() {

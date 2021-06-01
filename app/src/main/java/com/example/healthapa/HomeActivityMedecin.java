@@ -12,7 +12,8 @@ import androidx.fragment.app.FragmentManager;
 public class HomeActivityMedecin extends DialogFragment {
 
     FragmentManager fragmentManager;
-    ImageView menuParcours, menuAdd;
+    ImageView menuParcours, menuAdd,menuPatient;
+
 
     public HomeActivityMedecin() {
 
@@ -29,10 +30,15 @@ public class HomeActivityMedecin extends DialogFragment {
         View view = inflater.inflate(R.layout.activity_home_medecin, container, false);
 
         menuParcours = view.findViewById(R.id.imageViewParcoursMedecin);
+        menuPatient = view.findViewById(R.id.imageViewPatientMedecin);
         menuAdd = view.findViewById(R.id.imageViewAjoutMedecin);
 
         menuParcours.setOnClickListener(v -> {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListeParcours()).commit();
+        });
+
+        menuPatient.setOnClickListener(v -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParcoursUser()).commit();
         });
 
         menuAdd.setOnClickListener(v -> {

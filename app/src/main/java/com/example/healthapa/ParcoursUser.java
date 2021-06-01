@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.healthapa.dao.ActiviteDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Activite;
 import com.example.healthapa.entities.Parcours;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,6 +35,9 @@ public class ParcoursUser extends DialogFragment {
     private MonRecyclerViewAdapterActivite mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private View view;
+
+    ActiviteDao activiteDao;
+    private apaDatabase db;
 
 
 
@@ -92,26 +97,26 @@ public class ParcoursUser extends DialogFragment {
     private ArrayList<LinkedHashMap<String, String>> getDataSource(){
 
         ArrayList<LinkedHashMap<String, String>> activites = new ArrayList<>();
-/*
-        int cnt = 0;
-        for (Activite ac: addActivityFragment.getListActivites())
-        {
-            LinkedHashMap<String, String> activite1 = new LinkedHashMap<>();
 
-            cnt++;
-            String count = String.valueOf(cnt);
+        new Thread(() -> {
 
-            Log.d("succes","---> Activité n°"+cnt);
-            Log.d("succes","Titre "+ac.getTitre());
-            Log.d("succes","Descrip "+ac.getDescription());
-            Log.d("succes","Duree "+ac.getDuree());
 
-            activite1.put("titre", ac.getTitre());
-            activite1.put("duree", ac.getDuree());
-            activite1.put("description", ac.getDescription());
-            activite1.put("structure", "SOON...");
-            activites.add(activite1);
-        }*/
+            db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+            activiteDao = db.activiteDao();
+            List<Activite> act_list = activiteDao.findAllActivite();
+
+            for (Activite act: act_list)
+            {
+                LinkedHashMap<String, String> activite1 = new LinkedHashMap<>();
+
+
+                activite1.put("titre", act.getTitre());
+                activite1.put("duree", act.getDuree());
+                activite1.put("description", act.getDescription());
+                activite1.put("structure", act.getStructure());
+                activites.add(activite1);
+            }
+        }).start();
 
         return activites;
 

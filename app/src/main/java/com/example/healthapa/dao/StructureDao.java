@@ -20,4 +20,7 @@ public interface StructureDao {
     @Query("SELECT nom FROM Structure")
     List<String> findByNameAllStructure();
 
+    @Query("SELECT nom FROM Structure WHERE nom =:nom")
+    String findByNameStructure(String nom);
+
 }

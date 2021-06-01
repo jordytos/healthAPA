@@ -12,18 +12,18 @@ public class Activite {
     private String titre;
     private String description;
     private String duree;
-    //private Structure structure;
+    private String structure;
 
     public Activite() {
 
     }
 
-   /* public Activite(String titre, String description,String duree, Structure structure) {
+   public Activite(String titre, String description,String duree, String structure) {
         this.titre = titre;
         this.description = description;
         this.duree = duree;
         this.structure = structure;
-    }*/
+    }
 
     public Activite(String titre, String description,String duree) {
         this.titre = titre;
@@ -55,14 +55,14 @@ public class Activite {
     public void setDescription(String description) {
         this.description = description;
     }
-/*
-    public Structure getStructure() {
+
+    public String getStructure() {
         return structure;
     }
 
-    public void setStructure(Structure structure) {
+    public void setStructure(String structure) {
         this.structure = structure;
-    } */
+    }
 
     public String getDuree() {
         return duree;
