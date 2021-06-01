@@ -11,20 +11,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.StructureDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Activite;
+import com.example.healthapa.entities.Parcours;
 import com.example.healthapa.entities.Structure;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ListeStructure extends DialogFragment{
 
     FragmentManager fragmentManager;
     FloatingActionButton floatingActivityButton;
 
-
-
+    StructureDao structureDao;
+    private apaDatabase db;
 
     private RecyclerView mRecyclerView;
     private MonRecyclerViewAdapterStructure mAdapter;
@@ -87,24 +92,25 @@ public class ListeStructure extends DialogFragment{
 
         ArrayList<LinkedHashMap<String, String>> structures = new ArrayList<>();
 
-        int cnt = 0;
-        for (Structure ac: addStructureFragment.getListStructures())
-        {
-            LinkedHashMap<String, String> structure1 = new LinkedHashMap<>();
+        new Thread(() -> {
 
-            cnt++;
-            String count = String.valueOf(cnt);
 
-            Log.d("succes","---> Strcutre n°"+cnt);
-            Log.d("succes","Titre "+ac.getNom());
-            Log.d("succes","Discipline "+ac.getDiscipline());
-            Log.d("succes","Pathologies "+ac.getListePathology());
+            db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+            structureDao = db.structureDao();
+            List<Structure> struc_list = structureDao.findAllStructure();
 
-            structure1.put("titre", ac.getNom());
-            structure1.put("discipline", ac.getDiscipline());
-            structure1.put("Pathologies", ac.getListePathology());
-            structures.add(structure1);
-        }
+            for (Structure stc: struc_list)
+            {
+                LinkedHashMap<String, String> structure1 = new LinkedHashMap<>();
+
+
+                structure1.put("nom", stc.getNom());
+                structure1.put("discipline", stc.getDiscipline());
+                structure1.put("pathologies", stc.getListePathology());
+                structures.add(structure1);
+            }
+
+        }).start();
 
         return structures;
 

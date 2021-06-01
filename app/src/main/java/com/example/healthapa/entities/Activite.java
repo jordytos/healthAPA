@@ -1,26 +1,29 @@
 package com.example.healthapa.entities;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Activite {
 
-    private static Long uid = 1L;
-
+    @PrimaryKey(autoGenerate = true)
     private Long id;
+
     private String titre;
     private String description;
     private String duree;
-    private Structure structure;
+    //private Structure structure;
 
     public Activite() {
-        setId(uid);
-        uid++;
+
     }
 
-    public Activite(String titre, String description,String duree, Structure structure) {
+   /* public Activite(String titre, String description,String duree, Structure structure) {
         this.titre = titre;
         this.description = description;
         this.duree = duree;
         this.structure = structure;
-    }
+    }*/
 
     public Activite(String titre, String description,String duree) {
         this.titre = titre;
@@ -52,14 +55,14 @@ public class Activite {
     public void setDescription(String description) {
         this.description = description;
     }
-
+/*
     public Structure getStructure() {
         return structure;
     }
 
     public void setStructure(Structure structure) {
         this.structure = structure;
-    }
+    } */
 
     public String getDuree() {
         return duree;

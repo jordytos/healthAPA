@@ -11,7 +11,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthapa.dao.ActiviteDao;
+import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Activite;
+import com.example.healthapa.entities.Parcours;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -23,7 +27,8 @@ public class ListeActivite extends DialogFragment{
     FragmentManager fragmentManager;
     FloatingActionButton floatingActivityButton;
 
-
+    ActiviteDao activiteDao;
+    private apaDatabase db;
 
 
     private RecyclerView mRecyclerView;
@@ -87,25 +92,24 @@ public class ListeActivite extends DialogFragment{
 
         ArrayList<LinkedHashMap<String, String>> activites = new ArrayList<>();
 
-        int cnt = 0;
-        for (Activite ac: addActivityFragment.getListActivites())
-        {
-            LinkedHashMap<String, String> activite1 = new LinkedHashMap<>();
+        new Thread(() -> {
 
-            cnt++;
-            String count = String.valueOf(cnt);
 
-            Log.d("succes","---> Activité n°"+cnt);
-            Log.d("succes","Titre "+ac.getTitre());
-            Log.d("succes","Descrip "+ac.getDescription());
-            Log.d("succes","Duree "+ac.getDuree());
+            db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+            activiteDao = db.activiteDao();
+            List<Activite> act_list = activiteDao.findAllActivite();
 
-            activite1.put("titre", ac.getTitre());
-            activite1.put("duree", ac.getDuree());
-            activite1.put("description", ac.getDescription());
-            activite1.put("structure", "SOON...");
-            activites.add(activite1);
-        }
+            for (Activite act: act_list)
+            {
+                LinkedHashMap<String, String> activite1 = new LinkedHashMap<>();
+
+
+                activite1.put("titre", act.getTitre());
+                activite1.put("duree", act.getDuree());
+                activite1.put("description", act.getDescription());
+                activites.add(activite1);
+            }
+        }).start();
 
         return activites;
 

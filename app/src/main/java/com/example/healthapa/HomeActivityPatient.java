@@ -47,13 +47,9 @@ public class HomeActivityPatient extends Fragment {
 
         menuParcours.setOnClickListener(v -> {
 
-            Intent intent = new Intent(getContext(),login.class);
-            startActivity(intent);
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParcoursUser()).commit();
 
-            Log.d("success","Butoon clické");
-            FragmentTransaction fr = getFragmentManager().beginTransaction();
-            fr.replace(R.id.fragment_container,new ParcoursUser());
-            fr.commit();
+
 
         });
 

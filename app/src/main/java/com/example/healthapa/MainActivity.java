@@ -108,62 +108,33 @@ public class MainActivity extends AppCompatActivity {
                             public void run() {
                                 Fragment selectedFragment = null;
 
-                                for (Utilisateur user: user_list)
-                                {
-                                    if(user.getRole().equals("Médecin")){
-
-                                        switch (item.getItemId()){
-                                            case R.id.menuHome:
+                                switch (item.getItemId()){
+                                    case R.id.menuHome:
+                                        for (Utilisateur user: user_list)
+                                        {
+                                            if(user.getRole().equals("Médecin")){
                                                 selectedFragment = new HomeActivityMedecin();
-                                                break;
-                                            case R.id.menuCompte:
-                                                selectedFragment = new UserInfo();
-                                                break;
-
-                                            case R.id.menuLogout:
-                                                selectedFragment = new logout();
-                                                break;
-                                        }
-                                    }
-                                    else if(user.getRole().equals("Patient")){
-
-
-                                        switch (item.getItemId()){
-                                            case R.id.menuHome:
+                                                Log.d("Jordy", "MEDECIN OK");
+                                            }
+                                            if(user.getRole().equals("Patient")){
                                                 selectedFragment = new HomeActivityPatient();
-                                                break;
-                                            case R.id.menuCompte:
-                                                selectedFragment = new UserInfo();
-                                                break;
-
-                                            case R.id.menuLogout:
-                                                selectedFragment = new logout();
-                                                break;
-                                        }
-                                    }
-                                    else if(user.getRole().equals("Intervenant")){
-
-
-                                        switch (item.getItemId()){
-                                            case R.id.menuHome:
+                                            }
+                                            if(user.getRole().equals("Intervenant")){
+                                                Log.d("Jordy ", "INTERVENANT OK");
                                                 selectedFragment = new HomeActivityIntervenant();
-                                                break;
-                                            case R.id.menuCompte:
-                                                selectedFragment = new UserInfo();
-                                                break;
-
-                                            case R.id.menuLogout:
-                                                selectedFragment = new logout();
-                                                break;
+                                            }
                                         }
-                                    }
-                                    else{
-                                        Log.d("Error", "Role non reconnu");
-                                    }
 
+                                        break;
+                                    case R.id.menuCompte:
+                                        selectedFragment = new UserInfo();
+                                        break;
+
+                                    case R.id.menuLogout:
+                                        selectedFragment = new logout();
+                                        break;
                                 }
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-
                             }
                         });
 

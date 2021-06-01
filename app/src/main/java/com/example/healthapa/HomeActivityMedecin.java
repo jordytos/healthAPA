@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -11,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 public class HomeActivityMedecin extends DialogFragment {
 
     FragmentManager fragmentManager;
+    ImageView menuParcours, menuAdd;
 
     public HomeActivityMedecin() {
 
@@ -25,6 +27,18 @@ public class HomeActivityMedecin extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.activity_home_medecin, container, false);
+
+        menuParcours = view.findViewById(R.id.imageViewParcoursMedecin);
+        menuAdd = view.findViewById(R.id.imageViewAjoutMedecin);
+
+        menuParcours.setOnClickListener(v -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListeParcours()).commit();
+        });
+
+        menuAdd.setOnClickListener(v -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListAddButton()).commit();
+        });
+
         return view;
     }
 }

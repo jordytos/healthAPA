@@ -14,64 +14,36 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.healthapa.entities.Activite;
+import com.example.healthapa.dao.ActiviteDao;
+import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Parcours;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class CreateParcoursFragment extends DialogFragment {
     ListView listViewData;
     ArrayAdapter<String> adapter;
-    String[] listeActivites = {"Activité 1","Activité 2","Activité 3","Activité 4","Activité 5","Activité 6","Activité 7"};
+    List<String> listeActivites;
 
     FragmentManager fm;
-    ListeParcours listeParcours;
     EditText nomEditText, descriptionEditText, categorieEditText, activiteEditText;
     Button addParcoursButton;
-    List<Parcours> listParcours = new ArrayList<Parcours>();
 
-
-   /* public CreateActiviteFragment() {
-        // Required empty public constructor
-
-    }*/
-
-
+    ParcoursDao parcoursDao;
+    ActiviteDao activiteDao;
+    private apaDatabase db;
 
     public CreateParcoursFragment() {
 
-        Parcours p1 = new Parcours("Parcours 1","AVC","Ok");
-        Parcours p2 = new Parcours("Parcours 2","Mal de dos","Alright");
-        Parcours p3 = new Parcours("Parcours 3","Arthrose","De Accuerdo");
-        Parcours p4 = new Parcours("Parcours 4","Ligaments croisées","Football");
-
-        this.listParcours.add(p1);
-        this.listParcours.add(p2);
-        this.listParcours.add(p3);
-        this.listParcours.add(p4);
-
-
-
     }
 
-    //GETTER
-    public List<Parcours> getListParcours() {
-        return listParcours;
-    }
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment AddActivityFragment.
-     */
     public static CreateParcoursFragment newInstance(FragmentManager fm) {
         CreateParcoursFragment fragment = new CreateParcoursFragment();
         fragment.fm = fm;
@@ -81,8 +53,6 @@ public class CreateParcoursFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
     }
 
@@ -102,10 +72,25 @@ public class CreateParcoursFragment extends DialogFragment {
         addParcoursButton = view.findViewById(R.id.addParcoursButton);
         listViewData = view.findViewById(R.id.listViewAct);
 
-        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeActivites);
+        Parcours parcours = new Parcours();
+        db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+        parcoursDao = db.parcoursDao();
+        activiteDao = db.activiteDao();
 
-        listViewData.setAdapter(adapter);
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    listeActivites = activiteDao.findByNameAllActivite();
 
+                    adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeActivites);
+
+                    listViewData.setAdapter(adapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -135,39 +120,34 @@ public class CreateParcoursFragment extends DialogFragment {
         });*/
 
         addParcoursButton.setOnClickListener(v -> {
-
-            String titre = nomEditText.getText().toString();
-            String descrip = descriptionEditText.getText().toString();
-            String categorie = categorieEditText.getText().toString();
-            String activite = activiteEditText.getText().toString();
-
-            /*Log.d("succes","Titre "+titre);
-            Log.d("succes","Descrip "+descrip);
-            Log.d("succes","Duree "+duree);*/
-
-            listParcours.add(new Parcours(titre,categorie,descrip));
+            String titre = nomEditText.getText().toString().trim();
+            String descrip = descriptionEditText.getText().toString().trim();
+            String categorie = categorieEditText.getText().toString().trim();
+            //String activite = activiteEditText.getText().toString();
 
 
-
-            int cnt = 0;
-            for (Parcours pc: this.listParcours)
-            {
-
-                cnt++;
-                String count = String.valueOf(cnt);
-
-                Log.d("succes","---> Parcours n°"+cnt);
-                Log.d("succes","Nom "+pc.getTitre());
-                Log.d("succes","Categorie "+pc.getCategory());
-                Log.d("succes","Description "+pc.getDescription());
-
-                /*activite1.put("titre", ac.getTitre());
-                activite1.put("duree", ac.getDuree());
-                activite1.put("description", ac.getDescription());
-                activite1.put("structure", "SOON...");
-                activites.add(activite1);*/
-            }
-
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    parcours.setTitre(titre);
+                    parcours.setCategory(categorie);
+                    parcours.setDescription(descrip);
+                    Log.d("Message : ", parcours.toString());
+                    try {
+                        parcoursDao.insererParcours(parcours);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("AFTER INSERT","ENTERED");
+                    getActivity().runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(), "Parcours Successfully added !!", Toast.LENGTH_SHORT).show();
+                            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListeParcours()).commit();
+                        }
+                    });
+                }
+            }).start();
 
         });
 

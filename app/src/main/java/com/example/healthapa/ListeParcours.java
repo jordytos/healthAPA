@@ -12,12 +12,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Activite;
 import com.example.healthapa.entities.Parcours;
+import com.example.healthapa.entities.Utilisateur;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ListeParcours extends Fragment {
 
@@ -25,7 +29,8 @@ public class ListeParcours extends Fragment {
     FloatingActionButton floatingActivityButton;
 
 
-
+    ParcoursDao parcoursDao;
+    private apaDatabase db;
 
     private RecyclerView mRecyclerView;
     private MonRecyclerViewAdapterParcours mAdapter;
@@ -88,27 +93,29 @@ public class ListeParcours extends Fragment {
 
         ArrayList<LinkedHashMap<String, String>> parcours = new ArrayList<>();
 
-        int cnt = 0;
-        for (Parcours pc: addParcoursFragment.getListParcours())
-        {
-            LinkedHashMap<String, String> parcours1 = new LinkedHashMap<>();
+        new Thread(() -> {
 
-            cnt++;
-            String count = String.valueOf(cnt);
 
-            Log.d("succes","---> Parcours n°"+cnt);
-            Log.d("succes","Nom "+pc.getTitre());
-            Log.d("succes","Catégorie "+pc.getCategory());
-            Log.d("succes","Description "+pc.getDescription());
+            db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+            parcoursDao = db.parcoursDao();
+            List<Parcours> parc_list = parcoursDao.findAllParcours();
 
-            parcours1.put("nom", pc.getTitre());
-            parcours1.put("categorie", pc.getCategory());
-            parcours1.put("description", pc.getDescription());
-            parcours1.put("activite", "SOON...");
-            parcours.add(parcours1);
-        }
+            for (Parcours pc: parc_list)
+            {
+                LinkedHashMap<String, String> parcours1 = new LinkedHashMap<>();
+
+
+                parcours1.put("nom", pc.getTitre());
+                parcours1.put("categorie", pc.getCategory());
+                parcours1.put("description", pc.getDescription());
+                parcours1.put("activite", "SOON...");
+                parcours.add(parcours1);
+            }
+        }).start();
+
 
         return parcours;
+
 
     }
 

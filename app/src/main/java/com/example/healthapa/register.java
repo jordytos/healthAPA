@@ -134,7 +134,7 @@ public class register extends AppCompatActivity {
 
                createUser();
 
-               reff.push().setValue(utilisateur);
+               //reff.push().setValue(utilisateur);
 
            }
         });

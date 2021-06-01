@@ -92,7 +92,7 @@ public class ParcoursUser extends DialogFragment {
     private ArrayList<LinkedHashMap<String, String>> getDataSource(){
 
         ArrayList<LinkedHashMap<String, String>> activites = new ArrayList<>();
-
+/*
         int cnt = 0;
         for (Activite ac: addActivityFragment.getListActivites())
         {
@@ -111,7 +111,7 @@ public class ParcoursUser extends DialogFragment {
             activite1.put("description", ac.getDescription());
             activite1.put("structure", "SOON...");
             activites.add(activite1);
-        }
+        }*/
 
         return activites;
 

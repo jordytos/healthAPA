@@ -30,9 +30,9 @@ public class MonRecyclerViewAdapterStructure extends RecyclerView.Adapter<MonRec
 
     @Override
     public void onBindViewHolder(ConteneurDeDonnee conteneur, int position) {
-        conteneur.titre.setText(structures.get(position).get("titre"));
+        conteneur.titre.setText(structures.get(position).get("nom"));
         conteneur.discipline.setText(structures.get(position).get("discipline"));
-        conteneur.Pathologies.setText(structures.get(position).get("Pathologies"));
+        conteneur.Pathologies.setText(structures.get(position).get("pathologies"));
     }
 
     @Override

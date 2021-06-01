@@ -1,17 +1,20 @@
 package com.example.healthapa.entities;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Structure {
 
-    private static Long uid = 1L;
-
+    @PrimaryKey(autoGenerate = true)
     private Long id;
+
     private String nom;
     private String discipline;
     private String listePathology;
 
     public Structure() {
-        setId(uid);
-        uid++;
+
     }
 
     public Structure(String nom, String discipline, String listePathology) {

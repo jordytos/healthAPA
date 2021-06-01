@@ -64,6 +64,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_user"
                 android:layout_marginTop="22dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
                 android:background="@drawable/white_rectangle_background"
                 android:orientation="vertical"
                 android:gravity="center"
@@ -87,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Patients"
+                    android:text="Mes patients"
                     android:textColor="@color/colorAccent"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
@@ -99,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/layout_parcours"
                 android:layout_marginTop="22dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/white_rectangle_background"
                 android:orientation="vertical"
                 android:gravity="center"
@@ -110,7 +113,7 @@
                 android:clickable="true">
 
                 <ImageView
-                    android:id="@+id/imageViewParcours"
+                    android:id="@+id/imageViewParcoursMedecin"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
@@ -146,6 +149,7 @@
                 android:clickable="true">
 
                 <ImageView
+                    android:id="@+id/imageViewAjoutMedecin"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
@@ -167,7 +171,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/trending_background"
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="@id/layout_parcours"

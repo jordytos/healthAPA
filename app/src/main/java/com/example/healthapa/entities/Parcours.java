@@ -1,30 +1,35 @@
 package com.example.healthapa.entities;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity
 public class Parcours {
 
-    private static Long uid = 1L;
-
+    @PrimaryKey(autoGenerate = true)
     private Long id;
+
     private String titre;
     private String description;
     private String category;
-    private Docteur docteur;
-    private List<Activite> activites;
+
+    //private Docteur docteur;
+    //private List<Activite> activites;
 
     public Parcours() {
-        setId(uid);
-        uid++;
+
     }
 
-    public Parcours(String titre, String description, String category, Docteur docteur, List<Activite> activites) {
+    /*public Parcours(String titre, String description, String category, Docteur docteur, List<Activite> activites) {
         this.titre = titre;
         this.description = description;
         this.category = category;
-        this.docteur = docteur;
+        //this.docteur = docteur;
         this.activites = activites;
-    }
+    }*/
 
     public Parcours(String titre, String category,String description) {
         this.titre = titre;
@@ -65,7 +70,13 @@ public class Parcours {
         this.category = category;
     }
 
-    public Docteur getDocteur() {
+    @NonNull
+    @Override
+    public String toString() {
+        return "Titre : " + titre + " , Catégorie : " +category + ", Description : " +description;
+    }
+
+    /*public Docteur getDocteur() {
         return docteur;
     }
 
@@ -79,5 +90,5 @@ public class Parcours {
 
     public void setActivites(List<Activite> activites) {
         this.activites = activites;
-    }
+    }*/
 }

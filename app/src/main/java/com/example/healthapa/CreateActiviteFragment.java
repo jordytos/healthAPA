@@ -23,7 +23,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.healthapa.dao.ActiviteDao;
+import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.StructureDao;
+import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Activite;
+import com.example.healthapa.entities.Parcours;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,47 +37,21 @@ import java.util.List;
 public class CreateActiviteFragment extends DialogFragment {
     ListView listViewData;
     ArrayAdapter<String> adapter;
-    String[] listeStructures = {"Structure 1","Structure 2","Structure 3","Structure 4","Structure 5","Structure 6","Structure 7"};
+    List<String> listeStructures;
 
     FragmentManager fm;
-    ListeActivite listeActivite;
 
     EditText titleEditText, descriptionEditText, durationEditText;
     Button addActivityButton;
-    List<Activite> listActivites = new ArrayList<Activite>();
 
+    ActiviteDao activiteDao;
+    StructureDao structureDao;
+    private apaDatabase db;
 
-   /* public CreateActiviteFragment() {
-        // Required empty public constructor
-
-    }*/
 
     public CreateActiviteFragment() {
-
-        Activite a1 = new Activite("Natation","description\", \"Lorem ipsum dolor sit amet coko lier de la verginier manteau soyeux","1h");
-        Activite a2 = new Activite("Course","Run Run","2h");
-        Activite a3 = new Activite("Marche","description\", \"Marchons parlons volons ok ok ronaldinho gaucho joueur foot ronalldo messi goat et fraude pessi hurle miaule aboie miaouw neymar jr mbappe lea tortue cough cough","3h");
-        Activite a4 = new Activite("Course à pied","Randonnée et marche le long du lac","30 min");
-
-        this.listActivites.add(a1);
-        this.listActivites.add(a2);
-        this.listActivites.add(a3);
-        this.listActivites.add(a4);
-
     }
 
-    //GETTER
-    public List<Activite> getListActivites() {
-        return listActivites;
-    }
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment AddActivityFragment.
-     */
     public static CreateActiviteFragment newInstance(FragmentManager fm) {
         CreateActiviteFragment fragment = new CreateActiviteFragment();
         fragment.fm = fm;
@@ -98,9 +77,30 @@ public class CreateActiviteFragment extends DialogFragment {
         addActivityButton = view.findViewById(R.id.addActivityButton);
         listViewData = view.findViewById(R.id.listViewStruct);
 
-        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeStructures);
+        Activite activite = new Activite();
+        db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+        activiteDao = db.activiteDao();
+        structureDao = db.structureDao();
 
-        listViewData.setAdapter(adapter);
+
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    listeStructures = structureDao.findByNameAllStructure();
+
+                    adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeStructures);
+                    listViewData.setAdapter(adapter);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
+
+
+
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -126,37 +126,30 @@ public class CreateActiviteFragment extends DialogFragment {
 
         addActivityButton.setOnClickListener(v -> {
 
-            String titre = titleEditText.getText().toString();
-            String descrip = descriptionEditText.getText().toString();
-            String duree = durationEditText.getText().toString();
+            String titre = titleEditText.getText().toString().trim();
+            String descrip = descriptionEditText.getText().toString().trim();
+            String duree = durationEditText.getText().toString().trim();
 
-            /*Log.d("succes","Titre "+titre);
-            Log.d("succes","Descrip "+descrip);
-            Log.d("succes","Duree "+duree);*/
-
-            listActivites.add(new Activite(titre,descrip,duree));
-
-
-
-            int cnt = 0;
-            for (Activite ac: this.listActivites)
-            {
-
-                cnt++;
-                String count = String.valueOf(cnt);
-
-                Log.d("succes","---> Activité n°"+cnt);
-                Log.d("succes","Titre "+ac.getTitre());
-                Log.d("succes","Descrip "+ac.getDescription());
-                Log.d("succes","Duree "+ac.getDuree());
-
-                /*activite1.put("titre", ac.getTitre());
-                activite1.put("duree", ac.getDuree());
-                activite1.put("description", ac.getDescription());
-                activite1.put("structure", "SOON...");
-                activites.add(activite1);*/
-            }
-
+            new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    activite.setTitre(titre);
+                    activite.setDuree(duree);
+                    activite.setDescription(descrip);
+                    Log.d("Message : ", activite.toString());
+                    try {
+                        activiteDao.insererActivite(activite);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getActivity().runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(), "Parcours Successfully added !!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).start();
 
         });
 
