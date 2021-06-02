@@ -17,3 +17,7 @@ Il s’agit de développer une application mobile permettant la gestion et le su
   * L’intervenant peut attribuer un parcours APA à un patient. Il peut lui programmer des séances de pratique qui peuvent avoir lieu dans des structures. 
   * Une fois qu'une activité est programmée à un patient, il peut la consulter et/ou réorganiser (si nécessaire) la distribution de ses séances de pratique. 
   * Le patient reçoit une notification de rappel de la séance avant son horaire de début. A la fin de la séance, il doit indiquer un rapport de réalisation (s’il la séance a été bien réalisée, une remarque).
+
+### Lien du diagramme de classe de l'application : [Diagramme](https://www.youtube.com/watch?v=F4SF03Yd8BE)
+
+### Lien de la vidéo demo du fonctionnement de l'application : [Video demo](https://www.youtube.com/watch?v=F4SF03Yd8BE)
