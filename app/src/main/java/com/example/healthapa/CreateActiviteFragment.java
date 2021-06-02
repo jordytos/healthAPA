@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.healthapa.dao.ActiviteDao;
@@ -50,6 +51,9 @@ public class CreateActiviteFragment extends DialogFragment {
     ActiviteDao activiteDao;
     StructureDao structureDao;
     private apaDatabase db;
+
+
+    private String newLabel;
 
 
     public CreateActiviteFragment() {
@@ -127,6 +131,11 @@ public class CreateActiviteFragment extends DialogFragment {
         descriptionEditText.addTextChangedListener(textWatcher);
         durationEditText.addTextChangedListener(textWatcher);
 
+
+
+
+
+        //ADD BUTTON
         addActivityButton.setOnClickListener(v -> {
 
             String titre = titleEditText.getText().toString().trim();
@@ -137,9 +146,13 @@ public class CreateActiviteFragment extends DialogFragment {
             new Thread(new Runnable(){
                 @Override
                 public void run() {
+                    String structure ="";
+                    for (int i = 0; i < listViewData.getCount(); i++){
+                        if(listViewData.isItemChecked(i) == true){
+                            structure = String.valueOf(listViewData.getItemAtPosition(i)).trim();
+                        }
+                    }
 
-                    int i = (int) (Math.random()* listViewData.getCount());
-                    String structure = String.valueOf((listViewData.getItemAtPosition(i))).trim();
                     activite.setTitre(titre);
                     activite.setDuree(duree);
                     activite.setDescription(descrip);
@@ -165,5 +178,7 @@ public class CreateActiviteFragment extends DialogFragment {
         super.onCreateOptionsMenu(menu, menuInflater);
 
     }
+
+
 
 }
