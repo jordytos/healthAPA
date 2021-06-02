@@ -1,19 +1,28 @@
 package com.example.healthapa;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.example.healthapa.dao.UtilisateurDao;
+import com.example.healthapa.dao.apaDatabase;
+import com.example.healthapa.entities.Utilisateur;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 public class HomeActivityMedecin extends DialogFragment {
 
     FragmentManager fragmentManager;
     ImageView menuParcours, menuAdd,menuPatient;
-
 
     public HomeActivityMedecin() {
 

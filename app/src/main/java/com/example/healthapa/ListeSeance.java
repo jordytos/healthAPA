@@ -1,5 +1,6 @@
 package com.example.healthapa;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,37 +11,47 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.healthapa.dao.StructureDao;
+import com.example.healthapa.dao.ActiviteDao;
+import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.SeanceDao;
 import com.example.healthapa.dao.UtilisateurDao;
 import com.example.healthapa.dao.apaDatabase;
-import com.example.healthapa.entities.Patient;
-import com.example.healthapa.entities.Structure;
+import com.example.healthapa.entities.Activite;
+import com.example.healthapa.entities.Seance;
 import com.example.healthapa.entities.Utilisateur;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class ListePatient extends DialogFragment{
+public class ListeSeance extends DialogFragment{
 
     FragmentManager fragmentManager;
 
-    UtilisateurDao utilisateurDao;
+    SeanceDao seanceDao;
     private apaDatabase db;
 
+    private FirebaseAuth mAuth;
+    private UtilisateurDao utilisateurDao;
+    private ParcoursDao parcoursDao;
+
     private RecyclerView mRecyclerView;
-    private MonRecyclerViewAdapterPatient mAdapter;
+    private MonRecyclerViewAdapterSeance mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private View view;
 
-    public ListePatient(){
+    public ListeSeance(){
+
+
     }
 
-    public static ListePatient newInstance(FragmentManager fragmentManager){
-        ListePatient listePatient = new ListePatient();
-        listePatient.fragmentManager = fragmentManager;
-        return listePatient;
+    public static ListeSeance newInstance(FragmentManager fragmentManager){
+        ListeSeance listeSeance = new ListeSeance();
+        listeSeance.fragmentManager = fragmentManager;
+        return listeSeance;
     }
 
     @Override
@@ -54,7 +65,7 @@ public class ListePatient extends DialogFragment{
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.liste_patient, container, false);
+        view = inflater.inflate(R.layout.liste_seance, container, false);
 
         // Add the following lines to create RecyclerView
         mRecyclerView = view.findViewById(R.id.recycler_view);
@@ -66,7 +77,7 @@ public class ListePatient extends DialogFragment{
         //mLayoutManager=new LinearLayoutManager(this,GridLayoutManager.VERTICAL, false);
 
         //mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MonRecyclerViewAdapterPatient(getContext(), getDataSource());
+        mAdapter = new MonRecyclerViewAdapterSeance(getContext(), getDataSource());
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
@@ -74,29 +85,30 @@ public class ListePatient extends DialogFragment{
 
     private ArrayList<LinkedHashMap<String, String>> getDataSource(){
 
-        ArrayList<LinkedHashMap<String, String>> patients = new ArrayList<>();
+        ArrayList<LinkedHashMap<String, String>> seances = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String currentUserEmail = currentUser.getEmail();
 
         new Thread(() -> {
 
-
             db = apaDatabase.getDatabase(getActivity().getApplicationContext());
-            utilisateurDao = db.utilisateurDao();
-            List<Utilisateur> pati_list = utilisateurDao.findPatientsEmail();
+            seanceDao = db.seanceDao();
+            List<Seance> sec_list = seanceDao.findSeanceByEmail(currentUserEmail);
 
-            for (Utilisateur pt: pati_list)
+            for (Seance sc: sec_list)
             {
-                LinkedHashMap<String, String> patient1 = new LinkedHashMap<>();
+                LinkedHashMap<String, String> seance1 = new LinkedHashMap<>();
 
-
-                patient1.put("nom", pt.getNom_user());
-                patient1.put("prenom", pt.getPrenom_user());
-                patient1.put("email", pt.getEmail());
-                patients.add(patient1);
+                seance1.put("nom", sc.getPatient());
+                seance1.put("duree", sc.getDuree());
+                seance1.put("date", sc.getDateTime());
+                seances.add(seance1);
             }
 
         }).start();
 
-        return patients;
+        return seances;
 
     }
 

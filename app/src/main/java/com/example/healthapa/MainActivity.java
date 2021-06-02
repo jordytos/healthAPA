@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
             db = apaDatabase.getDatabase(this);
             utilisateurDao = db.utilisateurDao();
-            List<Utilisateur> user_list = utilisateurDao.findAllUser();
+            List<Utilisateur> user_list = utilisateurDao.findByEmail(currentUserEmail);
 
 
             runOnUiThread(new Runnable(){
@@ -97,11 +97,15 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                    mAuth = FirebaseAuth.getInstance();
+                    FirebaseUser currentUser = mAuth.getCurrentUser();
+                    String currentUserEmail = currentUser.getEmail();
+
                     new Thread(() -> {
 
                         db = apaDatabase.getDatabase(getApplicationContext());
                         utilisateurDao = db.utilisateurDao();
-                        List<Utilisateur> user_list = utilisateurDao.findAllUser();
+                        List<Utilisateur> user_list = utilisateurDao.findByEmail(currentUserEmail);
 
                         runOnUiThread(new Runnable(){
                             @Override

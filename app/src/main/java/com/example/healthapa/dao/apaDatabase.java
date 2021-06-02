@@ -8,19 +8,21 @@ import androidx.room.RoomDatabase;
 
 import com.example.healthapa.entities.Activite;
 import com.example.healthapa.entities.Parcours;
+import com.example.healthapa.entities.Seance;
 import com.example.healthapa.entities.Structure;
 import com.example.healthapa.entities.Utilisateur;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Utilisateur.class, Parcours.class, Structure.class, Activite.class}, version = 7)
+@Database(entities = {Utilisateur.class, Parcours.class, Structure.class, Activite.class, Seance.class}, version = 8)
 public abstract class apaDatabase extends RoomDatabase {
 
     public abstract UtilisateurDao utilisateurDao();
     public abstract ParcoursDao parcoursDao();
     public abstract StructureDao structureDao();
     public abstract ActiviteDao activiteDao();
+    public abstract SeanceDao seanceDao();
 
     private static volatile apaDatabase INSTANCE;
 

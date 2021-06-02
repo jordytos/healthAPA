@@ -48,15 +48,15 @@ public class HomeActivityPatient extends Fragment {
         menuSeance = view.findViewById(R.id.imageViewSeancePatient);
 
         menuParcours.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListeParcours()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParcoursUser()).commit();
         });
 
         menuMedecin.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListAddButton()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListeProfessionnel()).commit();
         });
 
         menuSeance.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParcoursUser()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListeSeance()).commit();
         });
 
         return view;

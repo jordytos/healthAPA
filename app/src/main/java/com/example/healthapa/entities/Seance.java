@@ -1,28 +1,27 @@
 package com.example.healthapa.entities;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Seance {
 
-    private static Long uid = 1L;
-
+    @PrimaryKey(autoGenerate = true)
     private Long id;
-    private LocalDateTime dateTime;
-    private Integer duree;
-    private String rapport;
-    private Intervenant intervenant;
-    private Patient patient;
+
+    private String dateTime;
+    private String duree;
+    private String patient;
 
     public Seance() {
-        setId(uid);
-        uid++;
+
     }
 
-    public Seance(LocalDateTime dateTime, Integer duree, String rapport, Intervenant intervenant, Patient patient) {
+    public Seance(String dateTime, String duree, String patient) {
         this.dateTime = dateTime;
         this.duree = duree;
-        this.rapport = rapport;
-        this.intervenant = intervenant;
         this.patient = patient;
     }
 
@@ -34,43 +33,27 @@ public class Seance {
         this.id = id;
     }
 
-    public LocalDateTime getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 
-    public Integer getDuree() {
+    public String getDuree() {
         return duree;
     }
 
-    public void setDuree(Integer duree) {
+    public void setDuree(String duree) {
         this.duree = duree;
     }
 
-    public String getRapport() {
-        return rapport;
-    }
-
-    public void setRapport(String rapport) {
-        this.rapport = rapport;
-    }
-
-    public Intervenant getIntervenant() {
-        return intervenant;
-    }
-
-    public void setIntervenant(Intervenant intervenant) {
-        this.intervenant = intervenant;
-    }
-
-    public Patient getPatient() {
+    public String getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(String patient) {
         this.patient = patient;
     }
 }
