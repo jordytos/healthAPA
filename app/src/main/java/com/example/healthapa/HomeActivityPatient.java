@@ -21,7 +21,7 @@ import java.util.TimerTask;
 public class HomeActivityPatient extends Fragment {
 
     FragmentManager fragmentManager;
-    ImageView menuParcours;
+    ImageView menuParcours, menuMedecin, menuSeance;
 
     ParcoursUser addParcoursFragment = new ParcoursUser();
 
@@ -44,13 +44,19 @@ public class HomeActivityPatient extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_home_patient, container, false);
         menuParcours = view.findViewById(R.id.imageViewParcoursPatient);
+        menuMedecin = view.findViewById(R.id.imageViewMedecinPatient);
+        menuSeance = view.findViewById(R.id.imageViewSeancePatient);
 
         menuParcours.setOnClickListener(v -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListeParcours()).commit();
+        });
 
+        menuMedecin.setOnClickListener(v -> {
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListAddButton()).commit();
+        });
+
+        menuSeance.setOnClickListener(v -> {
             getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParcoursUser()).commit();
-
-
-
         });
 
         return view;

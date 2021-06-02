@@ -13,16 +13,18 @@ public class Activite {
     private String description;
     private String duree;
     private String structure;
+    private String patient;
 
     public Activite() {
 
     }
 
-   public Activite(String titre, String description,String duree, String structure) {
+   public Activite(String titre, String description,String duree, String structure, String patient) {
         this.titre = titre;
         this.description = description;
         this.duree = duree;
         this.structure = structure;
+       this.patient = patient;
     }
 
     public Activite(String titre, String description,String duree) {
@@ -70,5 +72,13 @@ public class Activite {
 
     public void setDuree(String duree) {
         this.duree = duree;
+    }
+
+    public String getPatient() {
+        return patient;
+    }
+
+    public void setPatient(String patient) {
+        this.patient = patient;
     }
 }

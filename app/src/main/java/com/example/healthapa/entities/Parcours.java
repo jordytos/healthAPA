@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
 
 @Entity
 public class Parcours {
@@ -15,27 +14,18 @@ public class Parcours {
     private String titre;
     private String description;
     private String category;
-
-    //private Docteur docteur;
-    //private List<Activite> activites;
+    private String patient;
 
     public Parcours() {
 
     }
 
-    /*public Parcours(String titre, String description, String category, Docteur docteur, List<Activite> activites) {
+
+    public Parcours(String titre, String category,String description, String patient) {
         this.titre = titre;
         this.description = description;
         this.category = category;
-        //this.docteur = docteur;
-        this.activites = activites;
-    }*/
-
-    public Parcours(String titre, String category,String description) {
-        this.titre = titre;
-        this.description = description;
-        this.category = category;
-
+        this.patient = patient;
     }
 
     public Long getId() {
@@ -70,25 +60,18 @@ public class Parcours {
         this.category = category;
     }
 
+    public String getPatient() {
+        return patient;
+    }
+
+    public void setPatient(String patient) {
+        this.patient = patient;
+    }
+
     @NonNull
     @Override
     public String toString() {
         return "Titre : " + titre + " , Catégorie : " +category + ", Description : " +description;
     }
 
-    /*public Docteur getDocteur() {
-        return docteur;
-    }
-
-    public void setDocteur(Docteur docteur) {
-        this.docteur = docteur;
-    }
-
-    public List<Activite> getActivites() {
-        return activites;
-    }
-
-    public void setActivites(List<Activite> activites) {
-        this.activites = activites;
-    }*/
 }

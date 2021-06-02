@@ -15,10 +15,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.healthapa.dao.ActiviteDao;
+import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.UtilisateurDao;
 import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Activite;
 import com.example.healthapa.entities.Parcours;
+import com.example.healthapa.entities.Utilisateur;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -36,8 +41,11 @@ public class ParcoursUser extends DialogFragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private View view;
 
-    ActiviteDao activiteDao;
+    private FirebaseAuth mAuth;
+    private ActiviteDao activiteDao;
     private apaDatabase db;
+    private UtilisateurDao utilisateurDao;
+    private ParcoursDao parcoursDao;
 
 
 
@@ -69,12 +77,10 @@ public class ParcoursUser extends DialogFragment {
         categorie = view.findViewById(R.id.categorieParc);
         descrip = view.findViewById(R.id.descriptionParc);
 
-        Parcours parc = new Parcours("Parcours de Jean","Marathon","Parcours pour le patient Jean qu'il doit impérativement suivre pour son bien-être");
-
-
-        titre.setText(parc.getTitre());
-        categorie.setText(parc.getCategory());
-        descrip.setText(parc.getDescription());
+        //Parcours parc = new Parcours("Parcours de Jean","Marathon","Parcours pour le patient Jean qu'il doit impérativement suivre pour son bien-être", "Jean");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String currentUserEmail = currentUser.getEmail();
 
         // Add the following lines to create RecyclerView
         mRecyclerView = view.findViewById(R.id.recycler_view);
@@ -89,6 +95,32 @@ public class ParcoursUser extends DialogFragment {
         mAdapter = new MonRecyclerViewAdapterActivite(getContext(), getDataSource());
         mRecyclerView.setAdapter(mAdapter);
 
+        new Thread(() -> {
+
+            db = apaDatabase.getDatabase(getActivity().getApplicationContext());
+            parcoursDao = db.parcoursDao();
+            List<Parcours> parc_list = parcoursDao.findAllParcours();
+
+
+            getActivity().runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    Parcours new_parcours = new Parcours();
+
+                    for (Parcours parcours: parc_list
+                    ) {
+                        if(parcours.getPatient().equals(currentUserEmail)){
+                            new_parcours = parcours;
+                        }
+
+                    }
+                    titre.setText(new_parcours.getTitre());
+                    categorie.setText(new_parcours.getCategory());
+                    descrip.setText(new_parcours.getDescription());
+                }
+            });
+
+        }).start();
 
         return view;
     }
@@ -97,15 +129,18 @@ public class ParcoursUser extends DialogFragment {
     private ArrayList<LinkedHashMap<String, String>> getDataSource(){
 
         ArrayList<LinkedHashMap<String, String>> activites = new ArrayList<>();
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String currentUserEmail = currentUser.getEmail();
 
         new Thread(() -> {
 
 
             db = apaDatabase.getDatabase(getActivity().getApplicationContext());
             activiteDao = db.activiteDao();
-            List<Activite> act_list = activiteDao.findAllActivite();
+            List<Activite> act_list = activiteDao.findActiviteByEmail(currentUserEmail);
 
-            for (Activite act: act_list)
+            for (Activite act : act_list)
             {
                 LinkedHashMap<String, String> activite1 = new LinkedHashMap<>();
 

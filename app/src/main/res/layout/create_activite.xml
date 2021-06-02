@@ -43,7 +43,7 @@
             android:gravity="start|bottom"
             android:inputType="textMultiLine"
             android:minLines="1"
-            android:maxLines="5"
+            android:maxLines="2"
             android:scrollbars="vertical" />
 
         <EditText
@@ -53,6 +53,42 @@
             android:ems="10"
             android:hint="Durée"
             android:inputType="number" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Sélectionnez un patient" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ListView
+                    android:id="@+id/listViewActPat"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:choiceMode="singleChoice" />
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Sélectionnez une structure" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -65,7 +101,7 @@
                 <ListView
                     android:id="@+id/listViewStruct"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="150dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
@@ -77,15 +113,16 @@
             </RelativeLayout>
 
         </ScrollView>
+
+        <Button
+            android:id="@+id/addActivityButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Ajouter une activité" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/addActivityButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:enabled="false"
-        android:text="Ajouter une activité" />
 
 
 </LinearLayout>

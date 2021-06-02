@@ -14,7 +14,7 @@ import com.example.healthapa.entities.Utilisateur;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Utilisateur.class, Parcours.class, Structure.class, Activite.class}, version = 5)
+@Database(entities = {Utilisateur.class, Parcours.class, Structure.class, Activite.class}, version = 7)
 public abstract class apaDatabase extends RoomDatabase {
 
     public abstract UtilisateurDao utilisateurDao();

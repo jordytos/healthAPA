@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.healthapa.dao.ActiviteDao;
 import com.example.healthapa.dao.ParcoursDao;
 import com.example.healthapa.dao.StructureDao;
+import com.example.healthapa.dao.UtilisateurDao;
 import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Activite;
 import com.example.healthapa.entities.Parcours;
@@ -53,7 +54,10 @@ public class CreateActiviteFragment extends DialogFragment {
     private apaDatabase db;
 
 
-    private String newLabel;
+    ArrayAdapter<String> adapterPatient;
+    List<String> listePatients;
+    UtilisateurDao utilisateurDao;
+    ListView listViewDataPat;
 
 
     public CreateActiviteFragment() {
@@ -83,11 +87,13 @@ public class CreateActiviteFragment extends DialogFragment {
         durationEditText = view.findViewById(R.id.durationActivite);
         addActivityButton = view.findViewById(R.id.addActivityButton);
         listViewData = view.findViewById(R.id.listViewStruct);
+        listViewDataPat = view.findViewById(R.id.listViewActPat);
 
         Activite activite = new Activite();
         db = apaDatabase.getDatabase(getActivity().getApplicationContext());
         activiteDao = db.activiteDao();
         structureDao = db.structureDao();
+        utilisateurDao = db.utilisateurDao();
 
 
         new Thread(new Runnable(){
@@ -95,9 +101,14 @@ public class CreateActiviteFragment extends DialogFragment {
             public void run() {
                 try {
                     listeStructures = structureDao.findByNameAllStructure();
+                    listePatients = utilisateurDao.findByEmailAllPatients();
 
                     adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeStructures);
+                    adapterPatient = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listePatients);
+
+
                     listViewData.setAdapter(adapter);
+                    listViewDataPat.setAdapter(adapterPatient);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -153,10 +164,18 @@ public class CreateActiviteFragment extends DialogFragment {
                         }
                     }
 
+                    String patient ="";
+                    for (int i = 0; i < listViewDataPat.getCount(); i++){
+                        if(listViewDataPat.isItemChecked(i) == true){
+                            patient = String.valueOf(listViewDataPat.getItemAtPosition(i)).trim();
+                        }
+                    }
+
                     activite.setTitre(titre);
                     activite.setDuree(duree);
                     activite.setDescription(descrip);
                     activite.setStructure(structure);
+                    activite.setPatient(patient);
                     activiteDao.insererActivite(activite);
 
                     getActivity().runOnUiThread(new Runnable(){

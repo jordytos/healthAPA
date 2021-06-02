@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.healthapa.dao.ActiviteDao;
 import com.example.healthapa.dao.ParcoursDao;
+import com.example.healthapa.dao.UtilisateurDao;
 import com.example.healthapa.dao.apaDatabase;
 import com.example.healthapa.entities.Parcours;
 
@@ -29,8 +30,11 @@ import java.util.List;
 
 public class CreateParcoursFragment extends DialogFragment {
     ListView listViewData;
+    ListView listViewDataPat;
     ArrayAdapter<String> adapter;
+    ArrayAdapter<String> adapterPatient;
     List<String> listeActivites;
+    List<String> listePatients;
 
     FragmentManager fm;
     EditText nomEditText, descriptionEditText, categorieEditText, activiteEditText;
@@ -38,6 +42,7 @@ public class CreateParcoursFragment extends DialogFragment {
 
     ParcoursDao parcoursDao;
     ActiviteDao activiteDao;
+    UtilisateurDao utilisateurDao;
     private apaDatabase db;
 
     public CreateParcoursFragment() {
@@ -71,21 +76,26 @@ public class CreateParcoursFragment extends DialogFragment {
         descriptionEditText = view.findViewById(R.id.descriptionParcours);
         addParcoursButton = view.findViewById(R.id.addParcoursButton);
         listViewData = view.findViewById(R.id.listViewAct);
+        listViewDataPat = view.findViewById(R.id.listViewPat);
 
         Parcours parcours = new Parcours();
         db = apaDatabase.getDatabase(getActivity().getApplicationContext());
         parcoursDao = db.parcoursDao();
         activiteDao = db.activiteDao();
+        utilisateurDao = db.utilisateurDao();
 
         new Thread(new Runnable(){
             @Override
             public void run() {
                 try {
                     listeActivites = activiteDao.findByNameAllActivite();
+                    listePatients = utilisateurDao.findByEmailAllPatients();
 
                     adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listeActivites);
+                    adapterPatient = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_multiple_choice,listePatients);
 
                     listViewData.setAdapter(adapter);
+                    listViewDataPat.setAdapter(adapterPatient);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -129,9 +139,17 @@ public class CreateParcoursFragment extends DialogFragment {
             new Thread(new Runnable(){
                 @Override
                 public void run() {
+                    String patient ="";
+                    for (int i = 0; i < listViewDataPat.getCount(); i++){
+                        if(listViewDataPat.isItemChecked(i) == true){
+                            patient = String.valueOf(listViewDataPat.getItemAtPosition(i)).trim();
+                        }
+                    }
+
                     parcours.setTitre(titre);
                     parcours.setCategory(categorie);
                     parcours.setDescription(descrip);
+                    parcours.setPatient(patient);
                     Log.d("Message : ", parcours.toString());
                     try {
                         parcoursDao.insererParcours(parcours);

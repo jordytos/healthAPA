@@ -19,4 +19,13 @@ public interface UtilisateurDao {
 
     @Query("SELECT * FROM Utilisateur WHERE email =:email LIMIT 1")
     Utilisateur findByEmail(String email);
+
+    @Query("SELECT * FROM Utilisateur WHERE role ='Patient' ")
+    List<Utilisateur> findPatientsEmail();
+
+    @Query("SELECT * FROM Utilisateur WHERE role ='Médecin' OR role='Intervenant' ")
+    List<Utilisateur> findProfesionnelsEmail();
+
+    @Query("SELECT email FROM Utilisateur WHERE role='Patient' ")
+    List<String> findByEmailAllPatients();
 }

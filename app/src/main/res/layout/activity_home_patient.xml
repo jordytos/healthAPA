@@ -76,6 +76,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/imageViewMedecinPatient"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"
@@ -144,6 +145,7 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_user">
 
                 <ImageView
+                    android:id="@+id/imageViewSeancePatient"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="8dp"

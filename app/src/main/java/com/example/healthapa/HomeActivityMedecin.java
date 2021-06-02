@@ -38,7 +38,7 @@ public class HomeActivityMedecin extends DialogFragment {
         });
 
         menuPatient.setOnClickListener(v -> {
-            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ParcoursUser()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListePatient()).commit();
         });
 
         menuAdd.setOnClickListener(v -> {

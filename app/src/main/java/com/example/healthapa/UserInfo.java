@@ -47,9 +47,6 @@ public class UserInfo extends DialogFragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String currentUserEmail = currentUser.getEmail();
 
-        Log.d("jordy","User email"+currentUserEmail);
-
-
 
         nomTxt = view.findViewById(R.id.nomUser);
         ageTxt = view.findViewById(R.id.ageUser);
@@ -93,11 +90,6 @@ public class UserInfo extends DialogFragment {
             });
 
         }).start();
-
-
-
-
-
 
 
         return view;
