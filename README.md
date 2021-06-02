@@ -20,4 +20,4 @@ Il s’agit de développer une application mobile permettant la gestion et le su
 
 ### Lien du diagramme de classe de l'application : ![Diagramme](Diagramme_de_classe_-_healthApp.jpeg)
 
-### Lien de la vidéo demo du fonctionnement de l'application : [Video demo](https://www.youtube.com/watch?v=F4SF03Yd8BE)
+### Lien de la vidéo demo du fonctionnement de l'application : [![Démo video](http://image.noelshack.com/fichiers/2021/22/3/1622647300-screenshot-20210602-170518-healthapa2.jpg)](https://www.youtube.com/watch?v=F4SF03Yd8BE)
